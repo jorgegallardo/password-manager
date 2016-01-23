@@ -1,22 +1,24 @@
 var argv = require('yargs')
   .command('hello', 'Greets the user', function(yargs) {
     yargs.options({
-      name: {
+      name: {                                       // --name ______
         demand: true,
-        alias: 'n', // alias is like a shortcut
-        description: 'Your first name goes here'
+        alias: 'n',                                 // alias = shortcut
+        description: 'Your first name goes here',
+        type: 'string'                              // value is required, otherwise just -n -l would acceptable
       },
       lastname: {
         demand: true,
         alias: 'l',
-        description: 'Your last name goes here'
+        description: 'Your last name goes here',
+        type: 'string'
       }
-    }).help('help');
+    }).help('help'); //gives description found in each option
   })
   .help('help') //gives the description found in the .command()
   .argv;
-var command = argv._[0];
 
+var command = argv._[0];
 console.log(argv);
 
 if(command === 'hello' && typeof argv.name !== 'undefined') {
