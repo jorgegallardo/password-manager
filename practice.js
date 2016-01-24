@@ -12,7 +12,7 @@ if(argv.bananas > 3) {
   .argv;
 console.log('The area is: ' + argv.w * argv.h);*/
 
-var argv = require('yargs')
+/*var argv = require('yargs')
   //.command('command name', 'command description', handler function)
   .command('create', 'Create an account.', function(yargs) {
     //yargs.options({}).help('help');
@@ -35,26 +35,26 @@ var argv = require('yargs')
         description: 'Account password.',
         type: 'string'
       }
-    }).help('help'); // allows user to type in something like --name --help to get help on what's required, otherwise it'll say Missing required arguments: username, password
+    }).help('help'); // allows user to type in create -n --help to get help on what's required, otherwise it'll say Missing required arguments: username, password
   })
-  // .command('get', 'Find an account.')
+  .command('get', 'Find an account.', function(yargs) {
+    yargs.options({
+      name: {
+        demand: true,
+        alias: 'g',
+        description: 'Gets an account.',
+        type: 'string'
+      }
+    }).help('help');
+  })
   .help('help') // allows user to type in node filename.js --help and get the command description
   .argv;
 var command = argv._[0];
 
-if(command === 'create' && typeof argv.name !== 'undefined' /*&& typeof argv.username !== 'undefined' && typeof argv.password !== 'undefined'*/) {
-  console.log("I'm gonna create an account." + argv.name /*+ argv.username + argv.password*/);
-
-
-
-
-
-
-
-} else if(command === 'get') {
+if(command === 'create' && typeof argv.name !== 'undefined' && typeof argv.username !== 'undefined' && typeof argv.password !== 'undefined') {
+  console.log("I'm gonna create an account.";
+} else if(command === 'get' && typeof argv.name !== 'undefined') {
   console.log("I'm gonna get your account.")
 } else {
   console.log("Invalid command.");
-}
-
-//create needs a name, username, and password
+}*/

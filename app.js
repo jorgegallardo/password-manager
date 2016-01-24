@@ -4,41 +4,63 @@ var storage = require('node-persist');
 storage.initSync();
 
 var argv = require('yargs')
-  .command('create', 'Creates an account', function(yargs) {
+  //.command('command name', 'command description', handler function)
+  .command('create', 'Create a new account.', function(yargs) {
+    //yargs.options({}).help('help');
     yargs.options({
       name: {
         demand: true,
         alias: 'n',
-        description: 'Create an account.',
+        description: 'Account name.',
         type: 'string'
       },
       username: {
-
+        demand: true,
+        alias: 'u',
+        description: 'Account username or email.',
+        type: 'string'
       },
       password: {
-
+        demand: true,
+        alias: 'p',
+        description: 'Account password.',
+        type: 'string'
       }
-    }).help('help');
+    }).help('help'); // allows user to type in create -n --help to get help on what's required, otherwise it'll say Missing required arguments: username, password
   })
-  .command('get', 'Gets an account' function() {
+  .command('get', 'Get an existing account.', function(yargs) {
     yargs.options({
       name: {
         demand: true,
-        alias: 'g',
+        alias: 'n',
         description: 'Gets an account.',
         type: 'string'
       }
     }).help('help');
   })
-  .help('help') //gives the description found in the .command()
+  .help('help') // allows user to type in node filename.js --help and get the command description
   .argv;
+var command = argv._[0];
 
-// create (creates account -- name, username, password)
-// get -- name (gets the account as long as you pass in the name)
-
-//account.name
-//account.username
-//account.password
+if(command === 'create' && typeof argv.name !== 'undefined' && typeof argv.username !== 'undefined' && typeof argv.password !== 'undefined') {
+  var createdAccount = createAccount({
+    name: argv.name,
+    username: argv.username,
+    password: argv.password
+  });
+  console.log("Account created!");
+  console.log(createdAccount);
+} else if(command === 'get' && typeof argv.name !== 'undefined') {
+  var fetchedAccount = getAccount(argv.name);
+  if(typeof fetchedAccount === 'undefined') {
+    console.log("Account not found.");
+  } else {
+    console.log("Account found!");
+    console.log(fetchedAccount);
+  }
+} else {
+  console.log("Invalid command.");
+}
 
 function createAccount(account) {
   var accounts = storage.getItemSync('accounts');
@@ -70,4 +92,3 @@ function getAccount(accountName) {
 // });
 // var testAccount = getAccount('Jorge');
 // console.log(testAccount);
-
