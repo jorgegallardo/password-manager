@@ -25,6 +25,12 @@ var argv = require('yargs')
         alias: 'p',
         description: 'Account password.',
         type: 'string'
+      },
+      masterPassword: {
+        demand: true,
+        alias: 'm',
+        description: 'Master password.',
+        type: 'string'
       }
     }).help('help'); // allows user to type in create -n --help to get help on what's required, otherwise it'll say Missing required arguments: username, password
   })
@@ -35,6 +41,12 @@ var argv = require('yargs')
         alias: 'n',
         description: 'Gets an account.',
         type: 'string'
+      },
+      masterPassword: {
+        demand: true,
+        alias: 'm',
+        description: 'Master password.',
+        type: 'string'
       }
     }).help('help');
   })
@@ -42,30 +54,41 @@ var argv = require('yargs')
   .argv;
 var command = argv._[0];
 
-if(command === 'create' && typeof argv.name !== 'undefined' && typeof argv.username !== 'undefined' && typeof argv.password !== 'undefined') {
+if(command === 'create' && argv.name && argv.username && argv.password) {
   var createdAccount = createAccount({
     name: argv.name,
     username: argv.username,
     password: argv.password
-  });
+  }, argv.masterPassword);
   console.log("Account created!");
   console.log(createdAccount);
-} else if(command === 'get' && typeof argv.name !== 'undefined') {
-  var fetchedAccount = getAccount(argv.name);
-  if(typeof fetchedAccount === 'undefined') {
-    console.log("Account not found.");
-  } else {
-    console.log("Account found!");
-    console.log(fetchedAccount);
-  }
+} else if(command === 'get' && argv.name) {
+    var fetchedAccount = getAccount(argv.name, argv.masterPassword);
+    if(!fetchedAccount) {
+      console.log("Account not found.");
+    } else {
+      console.log("Account found!");
+      console.log(fetchedAccount);
+    }
 } else {
   console.log("Invalid command.");
 }
 
-function createAccount(account) {
-  var accounts = storage.getItemSync('accounts');
+function getAccounts(masterPassword) {
+  // use getItemSync to fetch accounts
+  // decrypt
+  // return accounts array
+}
 
-  if(typeof accounts === 'undefined') {
+function saveAccounts(accounts, masterPassword) {
+  // encrypt accounts
+  // setItemSync to save encrypted accounts
+  // return accounts array
+}
+
+function createAccount(account, masterPassword) {
+  var accounts = storage.getItemSync('accounts');
+  if(!accounts) {
     accounts = [];
   }
   accounts.push(account);
@@ -74,7 +97,7 @@ function createAccount(account) {
   return account;
 }
 
-function getAccount(accountName) {
+function getAccount(accountName, masterPassword) {
   var accounts = storage.getItemSync('accounts');
 
   for (var i = 0; i < accounts.length; i++) {
@@ -82,7 +105,7 @@ function getAccount(accountName) {
       return accounts[i];
     }
   }
-  return undefined;
+  return null;
 }
 
 // createAccount({

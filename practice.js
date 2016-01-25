@@ -51,9 +51,9 @@ console.log('The area is: ' + argv.w * argv.h);*/
   .argv;
 var command = argv._[0];
 
-if(command === 'create' && typeof argv.name !== 'undefined' && typeof argv.username !== 'undefined' && typeof argv.password !== 'undefined') {
-  console.log("I'm gonna create an account.";
-} else if(command === 'get' && typeof argv.name !== 'undefined') {
+if(command === 'create' && argv.name && argv.username && argv.password) {
+  console.log("I'm gonna create an account.");
+} else if(command === 'get' && argv.name) {
   console.log("I'm gonna get your account.")
 } else {
   console.log("Invalid command.");
