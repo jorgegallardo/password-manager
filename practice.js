@@ -58,3 +58,13 @@ if(command === 'create' && argv.name && argv.username && argv.password) {
 } else {
   console.log("Invalid command.");
 }*/
+
+function blah(y) {
+  return "whoa " + y;
+}
+function first(x) {
+  var sugar = blah(x);
+  console.log(sugar + " it works");
+}
+
+first("hi");
