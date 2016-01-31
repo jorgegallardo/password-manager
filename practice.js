@@ -59,7 +59,7 @@ if(command === 'create' && argv.name && argv.username && argv.password) {
   console.log("Invalid command.");
 }*/
 
-function blah(y) {
+/*function blah(y) {
   return "whoa " + y;
 }
 function first(x) {
@@ -67,4 +67,19 @@ function first(x) {
   console.log(sugar + " it works");
 }
 
-first("hi");
+first("hi");*/
+
+try {
+  function divide(numerator, denominator) {
+    if(denominator === 0) {
+      throw new Error('You can\'t divide by 0.');
+    }
+    console.log(numerator/denominator);
+    console.log('This won\'t show if an error was thrown.');
+  }
+  divide(10,0);
+} catch(e) {
+  console.log(e);
+} finally {
+  console.log('This should run as long as the try section was executed.');
+}

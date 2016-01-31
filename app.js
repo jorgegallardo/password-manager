@@ -1,4 +1,4 @@
-console.log('starting password manager');
+console.log('Starting password manager...');
 var crypto = require('crypto-js');
 var storage = require('node-persist');
 storage.initSync();
@@ -53,22 +53,30 @@ var argv = require('yargs')
   .argv;
 var command = argv._[0];
 
-if(command === 'create' && argv.name && argv.username && argv.password) {
-  var createdAccount = createAccount({
-    name: argv.name,
-    username: argv.username,
-    password: argv.password
-  }, argv.masterPassword);
-  console.log("Account created!");
-  console.log(createdAccount);
-} else if(command === 'get' && argv.name) {
-    var fetchedAccount = getAccount(argv.name, argv.masterPassword);
+if(command === 'create' && argv.name && argv.username && argv.password && argv.masterPassword) {
+  try {
+    var createdAccount = createAccount({
+      name: argv.name,
+      username: argv.username,
+      password: argv.password
+    }, argv.masterPassword);
+    console.log("Account created!");
+    console.log(createdAccount);
+  } catch(e) {
+    console.log('Unable to create account.');
+  }
+} else if(command === 'get' && argv.name && argv.masterPassword) {
+  try {
+      var fetchedAccount = getAccount(argv.name, argv.masterPassword);
     if(!fetchedAccount) {
       console.log("Account not found.");
     } else {
       console.log("Account found!");
       console.log(fetchedAccount);
-    }
+    }  
+  } catch(e) {
+    console.log('Unable to fetch account.');
+  }
 } else {
   console.log("Invalid command.");
 }
