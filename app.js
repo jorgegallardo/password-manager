@@ -60,25 +60,31 @@ if(command === 'create' && argv.name && argv.username && argv.password && argv.m
       username: argv.username,
       password: argv.password
     }, argv.masterPassword);
-    console.log("Account created!");
-    console.log(createdAccount);
+    if(!createdAccount) {
+      console.log('Sorry, an account with that name already exists.')
+    } else {
+      console.log('Account created!');
+      console.log(createdAccount); 
+    }
+
+
   } catch(e) {
     console.log('Unable to create account.');
   }
 } else if(command === 'get' && argv.name && argv.masterPassword) {
   try {
-      var fetchedAccount = getAccount(argv.name, argv.masterPassword);
+    var fetchedAccount = getAccount(argv.name, argv.masterPassword);
     if(!fetchedAccount) {
-      console.log("Account not found.");
+      console.log('Account not found.');
     } else {
-      console.log("Account found!");
+      console.log('Account found!');
       console.log(fetchedAccount);
     }  
   } catch(e) {
     console.log('Unable to fetch account.');
   }
 } else {
-  console.log("Invalid command.");
+  console.log('Invalid command.');
 }
 
 function getAccounts(masterPassword) {
@@ -109,9 +115,14 @@ function createAccount(account, masterPassword) {
   //   accounts = [];
   // }
   var accounts = getAccounts(masterPassword);
-  accounts.push(account);
-  // storage.setItemSync('accounts', accounts);
-  saveAccounts(accounts, masterPassword);
+
+  if(!getAccount((account.name), masterPassword)) {
+    accounts.push(account);
+    // storage.setItemSync('accounts', accounts);
+    saveAccounts(accounts, masterPassword);
+  } else {
+    return null;
+  }
   return account;
 }
 
