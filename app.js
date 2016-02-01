@@ -66,8 +66,6 @@ if(command === 'create' && argv.name && argv.username && argv.password && argv.m
       console.log('Account created!');
       console.log(createdAccount); 
     }
-
-
   } catch(e) {
     console.log('Unable to create account.');
   }
